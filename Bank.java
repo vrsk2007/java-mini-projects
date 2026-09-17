@@ -11,7 +11,7 @@ public class Bank {
         Scanner sc = new Scanner(System.in);
         float balance = 1000.00f;
 
-        // ✅ Load balance from file if it exists
+        // Loading balance from file if it exists
         try {
             File file = new File("balance.txt");
             if (file.exists()) {
