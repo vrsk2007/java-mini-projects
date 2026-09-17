@@ -1,12 +1,30 @@
 package JAVA3;
 
-//JAVA__BANKING__SYSTEM
+// JAVA__BANKING__SYSTEM
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Bank {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         float balance = 1000.00f;
+
+        // ✅ Load balance from file if it exists
+        try {
+            File file = new File("balance.txt");
+            if (file.exists()) {
+                Scanner fileReader = new Scanner(file);
+                if (fileReader.hasNextFloat()) {
+                    balance = fileReader.nextFloat();
+                }
+                fileReader.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Error reading balance file, starting fresh.");
+        }
+
         int option;
         do {
             System.out.println(
@@ -32,7 +50,6 @@ public class Bank {
                 if (withdraw <= 0 || withdraw > balance) {
                     System.out.println("Enter Valid Amount");
                 } else {
-
                     balance -= withdraw;
                     System.out.println("Current Balance = " + balance);
                     System.out.println("Thank You, Visit Again");
@@ -57,6 +74,16 @@ public class Bank {
             } else {
                 System.out.println("Invalid Option");
             }
+
+            // Saving balance to file after each operation
+            try {
+                FileWriter writer = new FileWriter("balance.txt");
+                writer.write(String.valueOf(balance));
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("Error saving balance.");
+            }
+
         } while (option != 4);
         sc.close();
     }
